@@ -83,7 +83,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
     throw new Error('Invalid token')
   }
 
-  return verify(token, cert, { algorithms: ['RS256'] }) as JwtPayload
+  return verify(token, cert.publicKey, { algorithms: ['RS256'] }) as JwtPayload
 
 }
 
