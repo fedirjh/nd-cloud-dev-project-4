@@ -209,7 +209,7 @@ resources:
         Bucket: !Ref AttachmentsBucket
         PolicyDocument:
           Id: MyPolicy
-          Version: 2012-10-17
+          Version: "2012-10-17"
           Statement:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
