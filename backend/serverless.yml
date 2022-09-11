@@ -94,6 +94,7 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestValidator
           request:
             schemas:
               application/json: ${file(models/update-todo-model.json)}
@@ -136,7 +137,10 @@ functions:
         Action:
           - s3:PutObject
         Resource: !GetAtt TodosTable.Arn
-
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: !GetAtt TodosTable.Arn
 
 resources:
   Resources:
