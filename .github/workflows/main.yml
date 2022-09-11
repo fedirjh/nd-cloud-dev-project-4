@@ -30,7 +30,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - name: serverless deploy
-      uses: serverless/github-action@2
+      uses: serverless/github-action@v2
       with:
         args: -c "cd ./backend && serverless deploy"
         entrypoint: /bin/sh
