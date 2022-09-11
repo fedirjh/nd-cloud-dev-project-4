@@ -41,7 +41,6 @@ provider:
             - xray:PutTraceSegments
           Resource: "*"
 
-
 functions:
 
   Auth:
@@ -60,7 +59,7 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:Scan
+          - dynamodb:Query
         Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}"
 
   # TODO: Configure this function - 
@@ -75,6 +74,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestValidator
           request:
             schemas:
               application/json: ${file(models/create-todo-model.json)}
@@ -130,6 +130,7 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+
     iamRoleStatements:
       - Effect: Allow
         Action:
