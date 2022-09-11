@@ -58,11 +58,9 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
 
-  // Implement token verification
-  if(!jwt) throw new Error('Invalid token')
-
-  // check support for RS256.
-  if (jwt.header.alg !== 'RS256') throw new Error('Invalid token')
+  if (!jwt || !jwt.header || !jwt.header.kid || !jwt.header.alg || jwt.header.alg !== 'RS256' ) {
+    throw new Error('invalid token');
+  }
 
   const keyId:string = jwt.header.kid
 
@@ -74,7 +72,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const jwks = await Axios.get(jwksUrl).then(res => res.data);
 
   // Get Certificate
-  const cert:string = getSingingKey(jwks.keys, keyId);
+  const cert:string = getSingingKey(jwks, keyId);
 
   if(!cert) throw new Error('Invalid token')
 
@@ -103,14 +101,13 @@ function getSingingKey(jwks: any, kid: string): string {
 }
 
 function certToPEM(cert): string {
-  cert = `
+  cert = cert.match(/.{1,64}/g).join(`
 
------BEGIN CERTIFICATE-----
+`);
+  cert = `-----BEGIN CERTIFICATE-----
 
 ${cert}
 
------END CERTIFICATE-----
-
-`;
+-----END CERTIFICATE-----\n`;
   return cert;
 }
