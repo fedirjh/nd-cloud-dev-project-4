@@ -9,7 +9,7 @@ export class AttachmentUtils {
   constructor(
     private readonly s3 = createS3Bucket(),
     private readonly bucketName = process.env.ATTACHMENTS_S3_BUCKET,
-    private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION) {
+    private readonly urlExpiration = parseInt(process.env.SIGNED_URL_EXPIRATION)) {
   }
 
   async getUploadUrl(todoId: string): Promise<string> {
