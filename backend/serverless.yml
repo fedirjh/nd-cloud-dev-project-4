@@ -202,8 +202,6 @@ resources:
                 - POST
                 - DELETE
                 - HEAD
-                - OPTIONS
-                - PATCH
               AllowedOrigins:
                 - "*"
               MaxAge: '3000'
