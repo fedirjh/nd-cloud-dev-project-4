@@ -34,6 +34,7 @@ export class AttachmentUtils {
 
 function createS3Bucket() {
   return new XAWS.S3({
-    signatureVersion: 'v4'
+    signatureVersion: 'v4',
+    region: process.env.REGION,
   })
 }

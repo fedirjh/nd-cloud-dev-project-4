@@ -23,6 +23,7 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
+    REGION: ${self:provider.region}
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
     ATTACHMENTS_S3_BUCKET: serverless-c4-todo-app-fedirjh-images-${self:provider.stage}
