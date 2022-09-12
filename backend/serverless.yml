@@ -191,7 +191,7 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}
+        BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
             - AllowedHeaders:
@@ -221,4 +221,4 @@ resources:
               Principal: "*"
               Action:
                 - s3:GetObject
-              Resource: "arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*"
+              Resource: !Sub "arn:aws:s3:::${AttachmentsBucket}/*"
