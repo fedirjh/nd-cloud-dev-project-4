@@ -26,7 +26,7 @@ provider:
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
     ATTACHMENTS_S3_BUCKET: serverless-c4-todo-app-fedirjh-images-${self:provider.stage}
-    SIGNED_URL_EXPIRATION: 300
+    SIGNED_URL_EXPIRATION: 3000
 
   logs:
     # Enable API Gateway logs
