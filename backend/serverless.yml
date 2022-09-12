@@ -202,9 +202,11 @@ resources:
                 - POST
                 - DELETE
                 - HEAD
+                - OPTIONS
+                - PATCH
               AllowedOrigins:
                 - "*"
-              MaxAge: 3000
+              MaxAge: '3000'
 
     # TODO: Complete the policy below and attach it to the bucket defined above
     # For cross referencing the name of the bucket, use "!Ref AttachmentsBucket"
