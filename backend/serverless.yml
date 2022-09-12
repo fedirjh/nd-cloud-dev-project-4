@@ -224,3 +224,11 @@ resources:
               Action:
                 - s3:GetObject
               Resource: !Sub "arn:aws:s3:::${AttachmentsBucket}/*"
+    RequestValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: RequestValidator
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: true
