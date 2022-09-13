@@ -169,6 +169,11 @@ functions:
       - stream:
           type: dynamodb
           arn: !GetAtt TodosTable.StreamArn
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:DeleteObject
+        Resource: !GetAtt AttachmentsBucket.Arn
 
 resources:
   Resources:
