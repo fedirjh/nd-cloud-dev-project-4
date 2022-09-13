@@ -73,5 +73,5 @@ export async function deleteAttachment(
   todoId: string
 ): Promise<void> {
   logger.info('Deleting attachment from s3')
-  await attachmentUtils.deleteAttachment(todoId)
+  return await attachmentUtils.deleteAttachment(todoId)
 }

@@ -210,7 +210,7 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
+          StreamViewType: NEW_IMAGE
         LocalSecondaryIndexes:
           - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
             KeySchema:
