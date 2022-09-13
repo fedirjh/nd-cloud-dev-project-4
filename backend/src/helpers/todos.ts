@@ -68,3 +68,10 @@ export async function generateUploadUrl(
   await todosAccess.updateTodoAttachmentUrl(todoId, userId, attachmentUrl)
   return attachmentUtils.getUploadUrl(todoId)
 }
+
+export async function deleteAttachment(
+  todoId: string
+): Promise<void> {
+  logger.info('Deleting attachment from s3')
+  await attachmentUtils.deleteAttachment(todoId)
+}
