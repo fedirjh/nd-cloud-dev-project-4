@@ -6,6 +6,7 @@ service: serverless-todo-app
 plugins:
   - serverless-webpack
   - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
 
@@ -42,6 +43,21 @@ provider:
             - xray:PutTraceSegments
           Resource: "*"
 
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Udagram API
+        description: Serverless application for images sharing
+    models:
+      - name: CreateRequest
+        contentType: application/json
+        schema: ${file(models/create-todo-model.json)}
+      - name: UpdateRequest
+        contentType: application/json
+        schema: ${file(models/update-todo-model.json)}
+
 functions:
 
   Auth:
@@ -76,9 +92,11 @@ functions:
           cors: true
           authorizer: Auth
           reqValidatorName: RequestValidator
-          request:
-            schemas:
-              application/json: ${file(models/create-todo-model.json)}
+          documentation:
+            summary: Creates a new todo item
+            description: Creates a new todo item
+            requestModels:
+              application/json: CreateRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -96,9 +114,11 @@ functions:
           cors: true
           authorizer: Auth
           reqValidatorName: RequestValidator
-          request:
-            schemas:
-              application/json: ${file(models/update-todo-model.json)}
+          documentation:
+            summary: Updates a todo item
+            description: Updates a todo item
+            requestModels:
+              application/json: UpdateRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -224,6 +244,7 @@ resources:
               Principal: "*"
               Action:
                 - s3:GetObject
+                - s3:PutObject
               Resource: !Sub "arn:aws:s3:::${AttachmentsBucket}/*"
     RequestValidator:
       Type: AWS::ApiGateway::RequestValidator
