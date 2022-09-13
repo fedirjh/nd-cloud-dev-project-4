@@ -8,7 +8,7 @@ export const handler: DynamoDBStreamHandler = async (event: DynamoDBStreamEvent)
 
   for (const record of event.Records) {
     console.log('Processing record', JSON.stringify(record))
-    if (record.eventName !== 'REMOVE') {
+    if (record.eventName === 'REMOVE') {
       continue
     }
 
