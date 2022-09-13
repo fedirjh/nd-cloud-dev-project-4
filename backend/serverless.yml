@@ -204,6 +204,8 @@ resources:
           - AttributeName: todoId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         LocalSecondaryIndexes:
           - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
             KeySchema:
