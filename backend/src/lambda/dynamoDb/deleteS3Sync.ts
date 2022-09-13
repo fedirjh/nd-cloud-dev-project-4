@@ -9,13 +9,10 @@ export const handler: DynamoDBStreamHandler = async (event: DynamoDBStreamEvent)
   for (const record of event.Records) {
     console.log('Processing record', JSON.stringify(record))
     if (record.eventName !== 'REMOVE') {
-
       continue
     }
 
-    const newItem = record.dynamodb.Keys
-
-    const todoId = newItem.todoId.S
+    const todoId = record.dynamodb.Keys.todoId.S
 
     console.log('Deleting record', todoId)
     await deleteAttachment(todoId)
