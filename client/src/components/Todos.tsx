@@ -29,16 +29,20 @@ interface TodosProps {
 
 interface TodosState {
   todos: Todo[]
+  nextKey: string | undefined | null
   newTodoName: string
   newTodoDueDate: Date | null
   loadingTodos: boolean
+  limit: number
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
+    limit: 10,
     todos: [],
+    nextKey: '',
     newTodoName: '',
-    newTodoDueDate: null,
+    newTodoDueDate: new Date(),
     loadingTodos: true
   }
 
@@ -49,6 +53,19 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   handleDueDateChange = (event: (React.SyntheticEvent<Element, Event> | undefined), data : any) => {
     console.log(data.value)
     this.setState({ newTodoDueDate: data.value })
+  }
+
+  handleNextKeyClick = async () => {
+    try {
+      const { todos, nextKey } = await getTodos(this.props.auth.getIdToken(),this.state.limit,this.state.nextKey)
+      this.setState({
+        todos,
+        nextKey,
+        loadingTodos: false
+      })
+    } catch (e) {
+      alert(`Failed to fetch todos: ${(e as Error).message}`)
+    }
   }
 
   onEditButtonClick = (todoId: string) => {
@@ -105,9 +122,10 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   async componentDidMount() {
     try {
-      const todos = await getTodos(this.props.auth.getIdToken())
+      const { todos,nextKey } = await getTodos(this.props.auth.getIdToken(),this.state.limit,this.state.nextKey)
       this.setState({
         todos,
+        nextKey,
         loadingTodos: false
       })
     } catch (e) {
@@ -123,8 +141,24 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         {this.renderCreateTodoInput()}
 
         {this.renderTodos()}
+
+        {this.renderNextPageButton()}
       </div>
     )
+  }
+
+  renderNextPageButton(): React.ReactNode {
+    if (!this.state.loadingTodos && this.state.nextKey) {
+      return (
+        <Grid centered columns={2}>
+          <Grid.Column textAlign={"center"} width={3}>
+            <Button onClick={this.handleNextKeyClick} >
+              Next page
+            </Button>
+          </Grid.Column>
+        </Grid>
+      )
+    }
   }
 
   renderCreateTodoInput() {

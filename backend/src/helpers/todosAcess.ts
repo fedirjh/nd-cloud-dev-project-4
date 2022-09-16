@@ -4,6 +4,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate';
+import Key = DocumentClient.Key
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
@@ -18,20 +19,23 @@ export class TodosAccess {
     private readonly todosIndex = process.env.INDEX_NAME) {
   }
 
-  async getTodosForUser(userId: string): Promise<TodoItem[]> {
-    logger.info('Getting all todos')
+  async getTodosForUser(userId: string,limit:number,key:Key|null|undefined): Promise<{ items:TodoItem[],lastKey:Key|null|undefined }> {
+    logger.info('Getting Paginated todos')
 
     const result = await this.docClient.query({
       TableName: this.todosTable,
       IndexName: this.todosIndex,
       KeyConditionExpression: 'userId = :userId',
+      Limit: limit,
+      ExclusiveStartKey: key,
       ExpressionAttributeValues: {
         ':userId': userId
       }
     }).promise()
 
     const items = result.Items
-    return items as TodoItem[]
+    const lastKey = result.LastEvaluatedKey
+    return { items:items as TodoItem[], lastKey }
   }
 
   async createTodo(todoItem: TodoItem): Promise<TodoItem> {

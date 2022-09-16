@@ -9,6 +9,8 @@ import * as uuid from 'uuid'
 // import * as createError from 'http-errors'
 
 import { TodoUpdate } from '../models/TodoUpdate'
+import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'
+import Key = DocumentClient.Key
 
 // TODO: Implement businessLogic
 
@@ -18,9 +20,9 @@ const todosAccess = new TodosAccess()
 
 const attachmentUtils = new AttachmentUtils()
 
-export async function getTodosForUser(userId: string): Promise<TodoItem[]> {
-  logger.info('Getting all todos')
-  return todosAccess.getTodosForUser(userId)
+export async function getTodosForUser(userId: string,limit: number,key:Key|null|undefined): Promise<{ items:TodoItem[],lastKey:Key|null|undefined }> {
+  logger.info('Getting paginated todos')
+  return todosAccess.getTodosForUser(userId,limit,key)
 }
 
 export async function createTodo(
