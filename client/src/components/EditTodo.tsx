@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Form, Button } from 'semantic-ui-react'
-import Auth from '../auth/Auth'
 import { getUploadUrl, uploadFile } from '../api/todos-api'
+import { withAuthenticationRequired } from '@auth0/auth0-react'
+import Callback from './Callback'
 
 enum UploadState {
   NoUpload,
@@ -15,7 +16,7 @@ interface EditTodoProps {
       todoId: string
     }
   }
-  auth: Auth
+  getToken: any
 }
 
 interface EditTodoState {
@@ -23,7 +24,7 @@ interface EditTodoState {
   uploadState: UploadState
 }
 
-export class EditTodo extends React.PureComponent<
+class EditTodo extends React.PureComponent<
   EditTodoProps,
   EditTodoState
 > {
@@ -41,6 +42,7 @@ export class EditTodo extends React.PureComponent<
     })
   }
 
+
   handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
 
@@ -51,7 +53,8 @@ export class EditTodo extends React.PureComponent<
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.todoId)
+
+      const uploadUrl = await getUploadUrl(await this.props.getToken(), this.props.match.params.todoId)
 
       this.setUploadState(UploadState.UploadingFile)
       await uploadFile(uploadUrl, this.state.file)
@@ -108,3 +111,7 @@ export class EditTodo extends React.PureComponent<
     )
   }
 }
+
+export default withAuthenticationRequired(EditTodo, {
+  onRedirecting: () => <Callback />,
+});

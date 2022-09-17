@@ -19,24 +19,25 @@ import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 
 
 import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
-import Auth from '../auth/Auth'
 import { Todo } from '../types/Todo'
+import { withAuthenticationRequired } from '@auth0/auth0-react'
+import Callback from './Callback'
 
 interface TodosProps {
-  auth: Auth
+  getToken: any
   history: History
 }
 
 interface TodosState {
   todos: Todo[]
-  nextKey: string | undefined | null
+  nextKey: string|null
   newTodoName: string
   newTodoDueDate: Date | null
   loadingTodos: boolean
   limit: number
 }
 
-export class Todos extends React.PureComponent<TodosProps, TodosState> {
+class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     limit: 10,
     todos: [],
@@ -51,13 +52,17 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   }
 
   handleDueDateChange = (event: (React.SyntheticEvent<Element, Event> | undefined), data : any) => {
-    console.log(data.value)
     this.setState({ newTodoDueDate: data.value })
   }
 
+
   handleNextKeyClick = async () => {
     try {
-      const { todos, nextKey } = await getTodos(this.props.auth.getIdToken(),this.state.limit,this.state.nextKey)
+      this.setState({
+        loadingTodos: true
+      })
+      const { todos, nextKey } = await getTodos(await this.props.getToken(),this.state.limit,this.state.nextKey)
+
       this.setState({
         todos,
         nextKey,
@@ -72,11 +77,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     this.props.history.push(`/todos/${todoId}/edit`)
   }
 
-  onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+  onTodoCreate = async () => {
     try {
       // @ts-ignore
       const dueDate = dateFormat(this.state.newTodoDueDate,'yyyy-mm-dd')
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
+      const newTodo = await createTodo(await this.props.getToken(), {
         name: this.state.newTodoName,
         dueDate
       })
@@ -84,7 +89,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       this.setState({
         todos: [...this.state.todos, newTodo],
         newTodoName: '',
-        newTodoDueDate: null
+        newTodoDueDate: new Date()
       })
     } catch {
       alert('Todo creation failed')
@@ -93,7 +98,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   onTodoDelete = async (todoId: string) => {
     try {
-      await deleteTodo(this.props.auth.getIdToken(), todoId)
+      await deleteTodo(await this.props.getToken(), todoId)
       this.setState({
         todos: this.state.todos.filter(todo => todo.todoId !== todoId)
       })
@@ -105,7 +110,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   onTodoCheck = async (pos: number) => {
     try {
       const todo = this.state.todos[pos]
-      await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
+      await patchTodo(await this.props.getToken(), todo.todoId, {
         name: todo.name,
         dueDate: todo.dueDate,
         done: !todo.done
@@ -122,7 +127,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   async componentDidMount() {
     try {
-      const { todos,nextKey } = await getTodos(this.props.auth.getIdToken(),this.state.limit,this.state.nextKey)
+      const { todos, nextKey } = await getTodos(await this.props.getToken(),this.state.limit,this.state.nextKey)
       this.setState({
         todos,
         nextKey,
@@ -148,10 +153,10 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   }
 
   renderNextPageButton(): React.ReactNode {
-    if (!this.state.loadingTodos && this.state.nextKey) {
+    if (!this.state.loadingTodos) {
       return (
-        <Grid centered columns={2}>
-          <Grid.Column textAlign={"center"} width={3}>
+        <Grid centered>
+          <Grid.Column textAlign={"center"}>
             <Button onClick={this.handleNextKeyClick} >
               Next page
             </Button>
@@ -265,3 +270,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     )
   }
 }
+
+export default withAuthenticationRequired(Todos, {
+  onRedirecting: () => <Callback />,
+});

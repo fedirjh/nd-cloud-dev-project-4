@@ -7,5 +7,6 @@ export const authConfig = {
   // domain: 'dev-nd9990-p4.us.auth0.com',
   domain: 'dev-lsvvgmr2.us.auth0.com',            // Auth0 domain
   clientId: 'JdXivPiN0tYY18K3NJov90790y5MvK5z',          // Auth0 client id
-  callbackUrl: 'http://localhost:3000/callback'
+  callbackUrl: 'http://localhost:3000/callback',
+  audience:'https://fedirjh.com/api/nd-p4'
 }
