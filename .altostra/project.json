@@ -1,0 +1,21 @@
+{
+  "id": "nd-coud-dev-project-4-kp50grg",
+  "name": "nd-coud-dev-project-4",
+  "created": "2022-09-19T16:53:12.217Z",
+  "description": "",
+  "blueprints": [
+    {
+      "version": "2019-10-24",
+      "connections": {},
+      "resources": {},
+      "metadata": {
+        "designer": {
+          "resourcePositions": {}
+        }
+      },
+      "id": "nd-coud-dev-project-4-kp40gm0",
+      "name": "nd-coud-dev-project-4"
+    }
+  ],
+  "type": "altostra"
+}
