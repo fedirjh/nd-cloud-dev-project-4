@@ -189,6 +189,7 @@ class Todos extends React.PureComponent<TodosProps, TodosState> {
             </Grid.Column>
             <Grid.Column width={4}>
               <SemanticDatepicker
+                locale="en-US"
                 clearable
                 value={this.state.newTodoDueDate}
                 onChange={this.handleDueDateChange} />

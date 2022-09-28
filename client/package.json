@@ -17,6 +17,7 @@
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@types/dateformat": "^3.0.1",
     "@types/jest": "26.0.24",
     "@types/node": "16.3.2",
