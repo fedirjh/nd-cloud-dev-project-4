@@ -246,13 +246,13 @@
 		{
 			"id": "bf208e6b-f66d-4008-9366-dd541ff65425",
 			"key": "apiId",
-			"value": "",
+			"value": "s4xstij56e",
 			"type": "string"
 		},
 		{
 			"id": "9bc6399a-d2bb-4f2d-9ffa-8480370d383c",
 			"key": "authToken",
-			"value": "",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldGYnp6TTdCZXktTkVwOHloZjc3TyJ9.eyJpc3MiOiJodHRwczovL2Rldi1sc3Z2Z21yMi51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTU0NjgyODk2MTIzNTIxNzY5OTciLCJhdWQiOlsiaHR0cHM6Ly9mZWRpcmpoLmNvbS9hcGkvbmQtcDQiLCJodHRwczovL2Rldi1sc3Z2Z21yMi51cy5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY0NDAxODcxLCJleHAiOjE2NjQ0ODgyNzEsImF6cCI6IkpkWGl2UGlOMHRZWTE4SzNOSm92OTA3OTB5NU12SzV6Iiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.QWCSRMxRFnAvJLuRTmHyxwPpno89wsk6DE5Uk6pnDLPwzm7P86mPp8ihINjO7BQjA-LtforEYD434FhIVOBN9I27-6puh-g1Fdm2eZdnB-xfDfun6_gxY4Ss8qgfl1e3ooiiOoya4Z1RiE9qXV6GsBNRd8FnCe-ZqLpEOcvJgVTQF4-TkxEDGZend4lnkyybBL8D8K740hPpkUwFG2jaygVLmwzDo_u-jOKSnY31X7K-LLZ8jBl71R3pyt2PhY2kQvYWOoKZDlEeA0MrvKXFW27yJ5Y8rS4FM4mnkgIeB4Je8ax5tbtERcz1zvWcDNmDU0M4DTpMKkP6VkhJTpVinQ",
 			"type": "string"
 		}
 	]
